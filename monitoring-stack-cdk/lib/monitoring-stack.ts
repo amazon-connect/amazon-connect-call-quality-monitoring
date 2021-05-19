@@ -24,7 +24,7 @@ export default class MonitoringStack extends cdk.Stack {
     if (
       ccpUrl == undefined 
       || !ccpUrl.startsWith('https://') 
-      || !ccpUrl.includes('.awsapps.com')
+      || !(ccpUrl.includes('.awsapps.com') || ccpUrl.includes('.my.connect.aws'))
       || !ccpUrl.includes('/ccp-v2') ) {
         throw(new Error('CCP URL must be the https:// url to your ccp-v2 softphone'));
       }
