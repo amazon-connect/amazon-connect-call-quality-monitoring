@@ -45,10 +45,27 @@ export class ElasticSearchStack extends cfn.NestedStack {
       this.ccpUrl = props.ccpUrl;
       // get a unique suffix from the second to last element of the stackId, e.g. 9e3a
       const suffix = cdk.Fn.select(3, cdk.Fn.split('-', cdk.Fn.select(2, cdk.Fn.split('/', this.stackId))));
-      // get the name of the connect instance from the ccp url
+      
+      // Get the name of the connect instance from the ccp url
+      
+      // Parsing depends on style of Connect URL being used (depends on when Connect resource was created)
+      var substringPattern;
+
+      // old-style URLs for Connect
+      if (this.ccpUrl.includes('.awsapps.com')) {
+        substringPattern = '.awsapps.com';
+      } 
+      // new-style URLs for Connect
+      else if (this.ccpUrl.includes('.my.connect.aws')) {
+        substringPattern = '.my.connect.aws';
+      }
+      else {
+        throw new Error('Unsupported Connect URL format, expected "xxx.awsapps.com" or "xxx.my.connect.aws"!');
+      }
+
       this.ccpName = this.ccpUrl.substring(
         this.ccpUrl.indexOf('//') + 2,
-        this.ccpUrl.indexOf('.awsapps.com'),
+        this.ccpUrl.indexOf(substringPattern),
       );
 
       if (this.ccpName.length > 24) {
