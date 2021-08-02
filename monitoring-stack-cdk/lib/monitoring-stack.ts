@@ -20,7 +20,7 @@ export default class MonitoringStack extends cdk.Stack {
       ( !customStreamsUrl?.startsWith('https://') || customStreamsUrl.endsWith('/') )){
       throw(new Error("Custom Streams URL must begin with https:// and not contain trailing slash"));
     }
-    const ccpUrl = process.env.CCP_URL!;
+    const ccpUrl = process.env.CCP_URL;
     if (
       ccpUrl == undefined 
       || !ccpUrl.startsWith('https://') 
